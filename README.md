@@ -116,13 +116,13 @@ I tested the main APIs using Postman. These are the important tests and their re
 
 ### A. User registration and validation
 
-I registered two test accounts: Ankit and Security Test. I also checked duplicate email, invalid email and short password cases.
+I registered two test accounts: Ronit and Security Test. I also checked duplicate email, invalid email and short password cases.
 
 The signup test with `"role": "admin"` was also checked. The response created the account with the `user` role, so a user cannot assign themselves the admin role through public signup.
 
 ![Server started](screenshots/01-server-start.png)
 
-![Ankit registration](screenshots/02-user-registration-ankit.png)
+![Ronit registration](screenshots/02-user-registration-Ronit.png)
 
 ![Security Test registration](screenshots/03-user-registration-security-test.png)
 
@@ -166,7 +166,7 @@ After that, I used the JWT to create two notes, view them, update one note and d
 
 I tested the admin endpoint with a normal user's token first. The API denied access with `403 Forbidden`.
 
-For the admin test, I changed Ankit's role to `admin` in my local MongoDB database and logged in again to get a token containing the updated role. The admin endpoint then returned the registered users.
+For the admin test, I changed Ronit's role to `admin` in my local MongoDB database and logged in again to get a token containing the updated role. The admin endpoint then returned the registered users.
 
 ![Normal user denied from admin API](screenshots/16-admin-access-denied.png)
 
@@ -174,7 +174,7 @@ For the admin test, I changed Ankit's role to `admin` in my local MongoDB databa
 
 ### E. Real-time chat using Socket.IO
 
-I opened the chat page in two separate browser windows. I connected as Ankit in one window and Security Test in the other one. Both users joined the `general` room and exchanged messages.
+I opened the chat page in two separate browser windows. I connected as Ronit in one window and Security Test in the other one. Both users joined the `general` room and exchanged messages.
 
 The screenshots show the chat working in both browser windows. The JWT input has been hidden in these screenshots.
 
@@ -214,5 +214,5 @@ I tested the main features using Postman and tested the chat using two different
 **Project:** Secure Connect and Communication Platform  
 **Subject:** Web Development III  
 **Assignment:** Lab 4  
-**Student:** Ankit Kumar Pandey  
+**Student:** Ronit
 **University:** K.R. Mangalam University
