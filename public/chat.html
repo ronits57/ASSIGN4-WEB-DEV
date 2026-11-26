@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Secure Connect Chat</title>
+</head>
+
+<body>
+
+  <h2>Secure Connect - Real-Time Chat</h2>
+
+  <input
+    id="token"
+    placeholder="Paste JWT token"
+    size="60"
+  >
+
+  <br><br>
+
+  <input
+    id="room"
+    value="general"
+    placeholder="Room name"
+  >
+
+  <button onclick="connect()">Connect and Join</button>
+
+  <br><br>
+
+  <input
+    id="msg"
+    placeholder="Type your message"
+  >
+
+  <button id="sendBtn" onclick="send()" disabled>
+    Send
+  </button>
+
+  <ul id="messages"></ul>
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+
+    let socket;
+
+    function add(text) {
+      const li = document.createElement("li");
+      li.textContent = text;
+
+      document.getElementById("messages")
+        .appendChild(li);
+    }
+
+
+    function connect() {
+
+      if (socket) {
+        socket.disconnect();
+      }
+
+      const token =
+        document.getElementById("token").value.trim();
+
+      if (!token) {
+        alert("Please enter your JWT token");
+        return;
+      }
+
+      socket = io({
+        auth: {
+          token: token
+        }
+      });
+
+      socket.on("connect", () => {
+
+        const room =
+          document.getElementById("room").value.trim();
+
+        socket.emit("joinRoom", room);
+
+        document.getElementById("sendBtn").disabled = false;
+
+        add("Connected successfully");
+
+      });
+
+      socket.on("connect_error", (err) => {
+        add("Connection error: " + err.message);
+      });
+
+      socket.on("notification", (text) => {
+        add(text);
+      });
+
+      socket.on("message", (data) => {
+
+        add(
+          data.username + ": " + data.message
+        );
+
+      });
+
+      socket.on("errorMessage", (message) => {
+        add("Error: " + message);
+      });
+
+      socket.on("disconnect", () => {
+        document.getElementById("sendBtn").disabled = true;
+        add("Disconnected from server");
+      });
+
+    }
+
+
+    function send() {
+
+      if (!socket || !socket.connected) {
+        alert("Connect first");
+        return;
+      }
+
+      const room =
+        document.getElementById("room").value.trim();
+
+      const message =
+        document.getElementById("msg").value.trim();
+
+      if (!message) {
+        alert("Enter a message");
+        return;
+      }
+
+      socket.emit("chatMessage", {
+        room,
+        message
+      });
+
+      document.getElementById("msg").value = "";
+
+    }
+
+  </script>
+
+</body>
+</html>
